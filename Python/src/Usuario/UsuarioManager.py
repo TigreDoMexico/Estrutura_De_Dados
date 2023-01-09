@@ -1,4 +1,4 @@
-from Usuario.Usuario import *
+from src.Usuario.Usuario import *
 
 class UsuarioManager:
     def __init__(self):

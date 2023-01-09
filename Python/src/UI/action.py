@@ -1,5 +1,5 @@
-from UI.message import EntradaInvalida, MenuUsuario
-from Usuario.UsuarioManager import UsuarioManager
+from src.UI.message import EntradaInvalida, MenuUsuario
+from src.Usuario.UsuarioManager import UsuarioManager
 
 usuarioManager = UsuarioManager()
 

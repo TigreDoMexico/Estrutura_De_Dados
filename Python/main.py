@@ -1,5 +1,5 @@
-from UI.action import ExecutarMenuUsuario
-from UI.message import BoasVindas
+from src.UI.action import ExecutarMenuUsuario
+from src.UI.message import BoasVindas
 
 BoasVindas()
 
