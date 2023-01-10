@@ -42,13 +42,33 @@ class UsuarioTests(TestCase):
         self.assertEqual(resultado.Cpf, None)
         self.assertEqual(resultado.Email, None)
         self.assertEqual(resultado.DataNascimento, None)
-
-    @patch('builtins.input', lambda _: 'ABCDEF')
+    
     def test_Dado_UmaListaVazia_Quando_ObterUsuarioNoIndiceZero_Deve_RetornarNone(self):
         # ARRANGE
         service = UsuarioService()
         # ACT E ASSERT
         self.assertIsNone(service.obterUsuarioPorIndice(0))
+
+    @patch('builtins.input', lambda _: 'ABCDEF')
+    def test_Dado_UmaListaVazia_Quando_AdicionarNovoUsuario_E_ObterUsuarioPeloRA_Deve_RetornarOsDadosAdicionados(self):
+        # ARRANGE
+        service = UsuarioService()
+        # ACT
+        service.adicionarUsuario()
+        resultado = service.obterUsuarioPorRA('ABCDEF')        
+        # ASSERT
+        self.assertIsNotNone(resultado)
+        self.assertEqual(resultado.Ra, 'ABCDEF')
+        self.assertEqual(resultado.Nome, 'ABCDEF')
+        self.assertEqual(resultado.Cpf, None)
+        self.assertEqual(resultado.Email, None)
+        self.assertEqual(resultado.DataNascimento, None)
+
+    def test_Dado_UmaListaVazia_Quando_ObterUsuarioPorRA_Deve_RetornarNone(self):
+        # ARRANGE
+        service = UsuarioService()
+        # ACT E ASSERT
+        self.assertIsNone(service.obterUsuarioPorRA('ABCDEF'))
 
     def test_Dado_UmaListaDeUsuariosVazios_Quando_ImprimirUsuarios_Deve_ImprimirNadaNaTela(self):
         # ARRANGE

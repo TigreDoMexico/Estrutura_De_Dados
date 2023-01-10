@@ -29,5 +29,8 @@ class UsuarioService:
         except:
             return None
     
+    def obterUsuarioPorRA(self, ra):
+        return next((usuario for usuario in self.__lista_usuario if usuario.Ra == ra), None)
+    
     def obterTotalUsuarios(self):
         return len(self.__lista_usuario)
