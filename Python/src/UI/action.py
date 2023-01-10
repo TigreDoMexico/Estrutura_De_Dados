@@ -1,7 +1,7 @@
 from src.UI.message import EntradaInvalida, MenuUsuario
-from src.Usuario.UsuarioManager import UsuarioManager
+from ..Services import UsuarioService
 
-usuarioManager = UsuarioManager()
+usuarioService = UsuarioService()
 
 def ObterInputUsuario():
     valor = 0
@@ -27,7 +27,7 @@ def ExecutarMenuUsuario():
         EntradaInvalida()
 
 opcoesUsuario = {
-    1: usuarioManager.adicionarUsuario,
-    2: usuarioManager.imprimirUsuario
+    1: usuarioService.adicionarUsuario,
+    2: usuarioService.imprimirUsuario
 }
 

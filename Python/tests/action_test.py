@@ -1,6 +1,6 @@
 from unittest.mock import patch
 from unittest import main, TestCase
-from src.UI.action import ObterInputUsuario
+from src import ObterInputUsuario
 
 class ActionTests(TestCase):
     @patch('builtins.input', lambda _: '2')

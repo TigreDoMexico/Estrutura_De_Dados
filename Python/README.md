@@ -4,6 +4,6 @@
 Rodar o comando `python main.py`
 
 # Como testar
-Rodar o comando `python -m unittest discover -s .\src\Usuario\ -p '*_test.py'`
+Rodar o comando `python -m unittest discover -s .\tests\ -p '*_test.py'`
 
 Ainda em desenvolvimento
