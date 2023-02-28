@@ -19,9 +19,27 @@ class UsuarioService:
         return True
     
     def imprimirUsuario(self):
+        print("Imprimindo todos os Usuários")
+
         for usuario in self.__lista_usuario:
-            print("RA:", usuario.Ra)
-            print("Nome:", usuario.Nome)
+            imprimeUsuario(usuario)
+
+    def obterUsuario(self):        
+        valor = input("Digite o RA do usuário: ")
+
+        try:
+            usuarioEncontrado = obterUsuarioPorRA("333")
+        except ex:
+            print(ex)
+
+        # print("Executou")
+        # print(usuarioEncontrado)
+
+        # if usuarioEncontrado is not None:
+        #     print("Usuário Encontrado")
+        #     imprimeUsuario(usuarioEncontrado)
+        # else:
+        #     print("Usuário Não Encontrado")
     
     def obterUsuarioPorIndice(self, indice):
         try:
@@ -34,3 +52,7 @@ class UsuarioService:
     
     def obterTotalUsuarios(self):
         return len(self.__lista_usuario)
+
+    def imprimeUsuario(self, usuario):
+        print("RA:", usuario.Ra)
+        print("Nome:", usuario.Nome)
