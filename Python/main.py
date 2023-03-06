@@ -1,8 +1,9 @@
-from src import ExecutarMenuUsuario, BoasVindas, CriarTabelaUsuario
+from src import ExecutarMenuUsuario, BoasVindas, MontarBancoDeDados
 
-BoasVindas()
+if MontarBancoDeDados():
+    BoasVindas()
 
-CriarTabelaUsuario()
-
-while True:
-    ExecutarMenuUsuario()
+    while True:
+        ExecutarMenuUsuario()
+else:
+    print("Erro ao Gerar Banco de Dados. Não é possível executar o programa")

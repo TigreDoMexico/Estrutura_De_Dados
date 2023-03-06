@@ -11,11 +11,14 @@ def ExecutarComandoDatabase(comando):
         try:
             cursor.execute(comando)
         except Error as e:
-            print("== ERRO AO EXECUTAR COMANDO NO SQLITE ==")
-            print(e)
+            print("Erro Execução SQLITE: " + e)
+            return False
 
         conn.commit()
         conn.close()
+        return True
+
+    return False
 
 def ExecutarComandoDatabaseComParams(comando, params):
     conn = _obterConexao(databaseDirectory)
@@ -24,12 +27,14 @@ def ExecutarComandoDatabaseComParams(comando, params):
         try:
             cursor.execute(comando, params)
         except Error as e:
-            print("== ERRO AO EXECUTAR COMANDO NO SQLITE ==")
-            print(e)
+            print("Erro Execução SQLITE: " + e)
+            return False
 
         conn.commit()
         conn.close()
         return cursor.lastrowid
+
+    return False
 
 def _obterConexao(arquivo_db = databaseDirectory):
     conn = None
