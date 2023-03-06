@@ -17,39 +17,31 @@ class UsuarioService:
         self.__lista_usuario.insert(0, user)   # Adiciona no inicio da lista
 
         return True
-    
+
     def imprimirUsuario(self):
-        print("Imprimindo todos os Usuários")
-
         for usuario in self.__lista_usuario:
-            imprimeUsuario(usuario)
+            self.imprimeUsuario(usuario)
 
-    def obterUsuario(self):        
+    def obterUsuario(self):
         valor = input("Digite o RA do usuário: ")
 
-        try:
-            usuarioEncontrado = obterUsuarioPorRA("333")
-        except ex:
-            print(ex)
+        usuarioEncontrado = self.obterUsuarioPorRA(valor)
 
-        # print("Executou")
-        # print(usuarioEncontrado)
+        if usuarioEncontrado is not None:
+            print("Usuário Encontrado")
+            self.imprimeUsuario(usuarioEncontrado)
+        else:
+            print("Usuário Não Encontrado")
 
-        # if usuarioEncontrado is not None:
-        #     print("Usuário Encontrado")
-        #     imprimeUsuario(usuarioEncontrado)
-        # else:
-        #     print("Usuário Não Encontrado")
-    
     def obterUsuarioPorIndice(self, indice):
         try:
             return self.__lista_usuario[indice]
         except:
             return None
-    
+
     def obterUsuarioPorRA(self, ra):
         return next((usuario for usuario in self.__lista_usuario if usuario.Ra == ra), None)
-    
+
     def obterTotalUsuarios(self):
         return len(self.__lista_usuario)
 

@@ -24,7 +24,7 @@ class UsuarioTests(TestCase):
         # ARRANGE
         service = UsuarioService()
         # ACT
-        service.adicionarUsuario()        
+        service.adicionarUsuario()
         # ASSERT
         self.assertEqual(service.obterTotalUsuarios(), 1)
 
@@ -34,7 +34,7 @@ class UsuarioTests(TestCase):
         service = UsuarioService()
         # ACT
         service.adicionarUsuario()
-        resultado = service.obterUsuarioPorIndice(0)        
+        resultado = service.obterUsuarioPorIndice(0)
         # ASSERT
         self.assertIsNotNone(resultado)
         self.assertEqual(resultado.Ra, 'ABCDEF')
@@ -42,7 +42,7 @@ class UsuarioTests(TestCase):
         self.assertEqual(resultado.Cpf, None)
         self.assertEqual(resultado.Email, None)
         self.assertEqual(resultado.DataNascimento, None)
-    
+
     def test_Dado_UmaListaVazia_Quando_ObterUsuarioNoIndiceZero_Deve_RetornarNone(self):
         # ARRANGE
         service = UsuarioService()
@@ -55,7 +55,7 @@ class UsuarioTests(TestCase):
         service = UsuarioService()
         # ACT
         service.adicionarUsuario()
-        resultado = service.obterUsuarioPorRA('ABCDEF')        
+        resultado = service.obterUsuarioPorRA('ABCDEF')
         # ASSERT
         self.assertIsNotNone(resultado)
         self.assertEqual(resultado.Ra, 'ABCDEF')
@@ -70,12 +70,48 @@ class UsuarioTests(TestCase):
         # ACT E ASSERT
         self.assertIsNone(service.obterUsuarioPorRA('ABCDEF'))
 
+    @patch('builtins.input', lambda _: '12345')
+    def test_Dado_UmaListaDeUsuarios_Quando_ObterUsuarioPassandoRACerto_Deve_ImprimirOsDadosCertosNaTela(self):
+        # ARRANGE
+        output = self.configurarOutput()
+
+        usuario = Usuario()
+        usuario.Ra = "12345"
+        usuario.Nome = "12345"
+
+        service = UsuarioService([usuario])
+
+        # ACT
+        service.obterUsuario()
+
+        # ASSERT
+        sys.stdout = sys.__stdout__
+        self.assertEqual(output.getvalue(), 'Usuário Encontrado\nRA: 12345\nNome: 12345\n')
+
+    @patch('builtins.input', lambda _: 'ABCDE')
+    def test_Dado_UmaListaDeUsuarios_Quando_ObterUsuarioPassandoRAErrado_Deve_ImprimirQueNenhumUsuarioFoiEncontrado(self):
+        # ARRANGE
+        output = self.configurarOutput()
+
+        usuario = Usuario()
+        usuario.Ra = "12345"
+        usuario.Nome = "ABCDE"
+
+        service = UsuarioService([usuario])
+
+        # ACT
+        service.obterUsuario()
+
+        # ASSERT
+        sys.stdout = sys.__stdout__
+        self.assertEqual(output.getvalue(), 'Usuário Não Encontrado\n')
+
     def test_Dado_UmaListaDeUsuariosVazios_Quando_ImprimirUsuarios_Deve_ImprimirNadaNaTela(self):
         # ARRANGE
         output = self.configurarOutput()
         service = UsuarioService()
         # ACT
-        service.imprimirUsuario()        
+        service.imprimirUsuario()
         # ASSERT
         sys.stdout = sys.__stdout__
         self.assertEqual(output.getvalue(), '')
@@ -91,11 +127,11 @@ class UsuarioTests(TestCase):
         service = UsuarioService([usuario])
 
         # ACT
-        service.imprimirUsuario()        
+        service.imprimirUsuario()
         # ASSERT
         sys.stdout = sys.__stdout__
         self.assertEqual(output.getvalue(), 'RA: 12345\nNome: 12345\n')
-    
+
     def configurarOutput(self):
         output = io.StringIO()
         sys.stdout = output
