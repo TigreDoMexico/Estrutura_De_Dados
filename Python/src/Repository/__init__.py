@@ -1,1 +1,1 @@
-from src.Repository.SqliteConnection import *
+from src.Repository.Sqlite import *

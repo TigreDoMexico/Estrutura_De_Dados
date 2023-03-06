@@ -1,10 +1,8 @@
-import os
-from src import ExecutarMenuUsuario, BoasVindas, IniciarConexao
+from src import ExecutarMenuUsuario, BoasVindas, CriarTabelaUsuario
 
 BoasVindas()
 
-currentDirectory = os.getcwd()
-IniciarConexao(currentDirectory + "\\local\\pythonsqlite.db")
+CriarTabelaUsuario()
 
 while True:
     ExecutarMenuUsuario()
