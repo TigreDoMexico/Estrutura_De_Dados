@@ -30,6 +30,8 @@ opcoesUsuario = {
     1: usuarioService.adicionarUsuario,
     2: usuarioService.imprimirUsuario,
     3: usuarioService.obterUsuario,
-    4: usuarioService.obterTotalUsuarios
+    4: usuarioService.obterTotalUsuarios,
+    5: usuarioService.editarUsuario,
+    6: usuarioService.deletarUsuario
 }
 

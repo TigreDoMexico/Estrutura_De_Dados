@@ -9,3 +9,5 @@ def MenuUsuario():
     print("2 - Listar Usuários")
     print("3 - Buscar Usuário por RA")
     print("4 - Total de Usuários na base")
+    print("5 - Editar Usuário")
+    print("6 - Deletar Usuário")
