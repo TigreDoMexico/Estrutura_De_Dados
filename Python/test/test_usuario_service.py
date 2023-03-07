@@ -2,16 +2,22 @@ from unittest.mock import patch
 from unittest import main, TestCase
 from src.Models import Usuario
 from src import UsuarioService
+from faker import Faker
 import io
 import sys
 
 class UsuarioTests(TestCase):
+
+    # ----------- ADICINAR USUÁRIO  ----------- #
+
     @patch('builtins.input', lambda _: 'ABCDEF')
     def test_Dado_AsEntradasDoUsuario_Quando_AdicionarUsuario_Deve_RetornarTrue(self):
         # ARRANGE
         service = UsuarioService()
         # ACT E ASSERT
         self.assertTrue(service.adicionarUsuario())
+
+    # ----------- OBTER TOTAL USUÁRIOS  ----------- #
 
     def test_Dado_UmaListaVazia_Quando_ObterTotalDeUsuarios_Deve_RetornarZero(self):
         # ARRANGE
@@ -27,6 +33,15 @@ class UsuarioTests(TestCase):
         service.adicionarUsuario()
         # ASSERT
         self.assertEqual(service.obterTotalUsuarios(), 1)
+
+    def test_Dado_UmaListaComVariosUsuarios_Quando_ObterTotalDeUsuarios_Deve_RetornarOTamanhoTotalDaLista(self):
+        # ARRANGE
+        quantidadeEsperada = 3
+        service = UsuarioService(self._criarListaUsuarios(quantidadeEsperada))
+        # ACT E ASSERT
+        self.assertEqual(service.obterTotalUsuarios(), quantidadeEsperada)
+
+    # ----------- OBTER USUARIO POR ID  ----------- #
 
     @patch('builtins.input', lambda _: 'ABCDEF')
     def test_Dado_UmaListaVazia_Quando_AdicionarNovoUsuario_E_ObterUsuarioNoIndiceZero_Deve_RetornarOsDadosAdicionados(self):
@@ -49,20 +64,28 @@ class UsuarioTests(TestCase):
         # ACT E ASSERT
         self.assertIsNone(service.obterUsuarioPorIndice(0))
 
-    @patch('builtins.input', lambda _: 'ABCDEF')
-    def test_Dado_UmaListaVazia_Quando_AdicionarNovoUsuario_E_ObterUsuarioPeloRA_Deve_RetornarOsDadosAdicionados(self):
+    # ----------- OBTER USUARIO POR RA  ----------- #
+
+    def test_Dado_UmaListaComUsuarios_Quando_ObterUsuarioPeloRA_PassandoRACorreto_Deve_RetornarOUsuarioCompleto(self):
         # ARRANGE
-        service = UsuarioService()
+        users = self._criarListaUsuarios(1)
+        service = UsuarioService(users)
         # ACT
-        service.adicionarUsuario()
-        resultado = service.obterUsuarioPorRA('ABCDEF')
+        resultado = service.obterUsuarioPorRA(users[0].Ra)
         # ASSERT
         self.assertIsNotNone(resultado)
-        self.assertEqual(resultado.Ra, 'ABCDEF')
-        self.assertEqual(resultado.Nome, 'ABCDEF')
-        self.assertEqual(resultado.Cpf, None)
-        self.assertEqual(resultado.Email, None)
-        self.assertEqual(resultado.DataNascimento, None)
+        self.assertEqual(resultado.Ra, users[0].Ra)
+        self.assertEqual(resultado.Nome, users[0].Nome)
+        self.assertEqual(resultado.Cpf, users[0].Cpf)
+        self.assertEqual(resultado.Email, users[0].Email)
+        self.assertEqual(resultado.DataNascimento, users[0].DataNascimento)
+
+    def test_Dado_UmaListaComUsuarios_Quando_ObterUsuarioPeloRA_PassandoRAErrado_Deve_RetornarNone(self):
+        # ARRANGE
+        users = self._criarListaUsuarios(1)
+        service = UsuarioService(users)
+        # ACT E ASSERT
+        self.assertIsNone(service.obterUsuarioPorRA("ABCDEF"))
 
     def test_Dado_UmaListaVazia_Quando_ObterUsuarioPorRA_Deve_RetornarNone(self):
         # ARRANGE
@@ -70,10 +93,12 @@ class UsuarioTests(TestCase):
         # ACT E ASSERT
         self.assertIsNone(service.obterUsuarioPorRA('ABCDEF'))
 
+    # ----------- OBTER USUARIO  ----------- #
+
     @patch('builtins.input', lambda _: '12345')
-    def test_Dado_UmaListaDeUsuarios_Quando_ObterUsuarioPassandoRACerto_Deve_ImprimirOsDadosCertosNaTela(self):
+    def test_Dado_UmaListaDeUsuarios_Quando_ObterUsuario_PassandoRACerto_Deve_ImprimirOsDadosCertosNaTela(self):
         # ARRANGE
-        output = self.configurarOutput()
+        output = self._configurarOutput()
 
         usuario = Usuario()
         usuario.Ra = "12345"
@@ -89,9 +114,9 @@ class UsuarioTests(TestCase):
         self.assertEqual(output.getvalue(), 'Usuário Encontrado\nRA: 12345\nNome: 12345\n')
 
     @patch('builtins.input', lambda _: 'ABCDE')
-    def test_Dado_UmaListaDeUsuarios_Quando_ObterUsuarioPassandoRAErrado_Deve_ImprimirQueNenhumUsuarioFoiEncontrado(self):
+    def test_Dado_UmaListaDeUsuarios_Quando_ObterUsuario_PassandoRAErrado_Deve_ImprimirQueNenhumUsuarioFoiEncontrado(self):
         # ARRANGE
-        output = self.configurarOutput()
+        output = self._configurarOutput()
 
         usuario = Usuario()
         usuario.Ra = "12345"
@@ -106,9 +131,11 @@ class UsuarioTests(TestCase):
         sys.stdout = sys.__stdout__
         self.assertEqual(output.getvalue(), 'Usuário Não Encontrado\n')
 
+    # ----------- IMPRIMIR USUARIO  ----------- #
+
     def test_Dado_UmaListaDeUsuariosVazios_Quando_ImprimirUsuarios_Deve_ImprimirNadaNaTela(self):
         # ARRANGE
-        output = self.configurarOutput()
+        output = self._configurarOutput()
         service = UsuarioService()
         # ACT
         service.imprimirUsuario()
@@ -118,7 +145,7 @@ class UsuarioTests(TestCase):
 
     def test_Dado_UmaListaDeUsuarios_Quando_ImprimirUsuarios_Deve_ImprimirOsDadosDaLista(self):
         # ARRANGE
-        output = self.configurarOutput()
+        output = self._configurarOutput()
 
         usuario = Usuario()
         usuario.Ra = "12345"
@@ -132,10 +159,27 @@ class UsuarioTests(TestCase):
         sys.stdout = sys.__stdout__
         self.assertEqual(output.getvalue(), 'RA: 12345\nNome: 12345\n')
 
-    def configurarOutput(self):
+    # ----------- EDITAR USUARIO  ----------- #
+
+    # ----------- DELETAR USUARIO  ----------- #
+
+    def _configurarOutput(self):
         output = io.StringIO()
         sys.stdout = output
         return output
+
+    def _criarListaUsuarios(self, qnt):
+        userList = []
+        for i in range(qnt):
+            userList.append(self._criarUsuario())
+        return userList
+
+    def _criarUsuario(self):
+        fake = Faker()
+        usuario = Usuario()
+        usuario.Ra = str(fake.random_number()),
+        usuario.Nome = fake.first_name()
+        return usuario
 
 if __name__ == '__main__':
     main()
