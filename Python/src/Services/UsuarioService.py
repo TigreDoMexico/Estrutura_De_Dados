@@ -36,6 +36,8 @@ class UsuarioService:
     def editarUsuario(self):
         valor = input("Digite o RA do usuário: ")
 
+        print(valor)
+
         usuarioEncontrado = self.obterUsuarioPorRA(valor)
 
         if usuarioEncontrado is not None:

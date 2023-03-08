@@ -1,4 +1,4 @@
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 from unittest import main, TestCase
 from src.Models import Usuario
 from src import UsuarioService
@@ -99,11 +99,8 @@ class UsuarioTests(TestCase):
     def test_Dado_UmaListaDeUsuarios_Quando_ObterUsuario_PassandoRACerto_Deve_ImprimirOsDadosCertosNaTela(self):
         # ARRANGE
         output = self._configurarOutput()
-
-        usuario = Usuario()
-        usuario.Ra = "12345"
-        usuario.Nome = "12345"
-
+        raEsperado = '12345'
+        usuario = self._criarUsuario(raEsperado)
         service = UsuarioService([usuario])
 
         # ACT
@@ -111,22 +108,15 @@ class UsuarioTests(TestCase):
 
         # ASSERT
         sys.stdout = sys.__stdout__
-        self.assertEqual(output.getvalue(), 'Usuário Encontrado\nRA: 12345\nNome: 12345\n')
+        self.assertEqual(output.getvalue(), f'Usuário Encontrado\nRA: {raEsperado}\nNome: {usuario.Nome}\n')
 
     @patch('builtins.input', lambda _: 'ABCDE')
     def test_Dado_UmaListaDeUsuarios_Quando_ObterUsuario_PassandoRAErrado_Deve_ImprimirQueNenhumUsuarioFoiEncontrado(self):
         # ARRANGE
         output = self._configurarOutput()
-
-        usuario = Usuario()
-        usuario.Ra = "12345"
-        usuario.Nome = "ABCDE"
-
-        service = UsuarioService([usuario])
-
+        service = UsuarioService([self._criarUsuario("12345")])
         # ACT
         service.obterUsuario()
-
         # ASSERT
         sys.stdout = sys.__stdout__
         self.assertEqual(output.getvalue(), 'Usuário Não Encontrado\n')
@@ -146,21 +136,37 @@ class UsuarioTests(TestCase):
     def test_Dado_UmaListaDeUsuarios_Quando_ImprimirUsuarios_Deve_ImprimirOsDadosDaLista(self):
         # ARRANGE
         output = self._configurarOutput()
-
-        usuario = Usuario()
-        usuario.Ra = "12345"
-        usuario.Nome = "12345"
-
+        raEsperado = "12345"
+        usuario = self._criarUsuario(raEsperado)
         service = UsuarioService([usuario])
-
         # ACT
         service.imprimirUsuario()
         # ASSERT
         sys.stdout = sys.__stdout__
-        self.assertEqual(output.getvalue(), 'RA: 12345\nNome: 12345\n')
+        self.assertEqual(output.getvalue(), f'RA: {raEsperado}\nNome: {usuario.Nome}\n')
 
     # ----------- EDITAR USUARIO  ----------- #
+    
+    def test_Dado_UmaListaComUsuario_Quando_EditarUsuario_PasssandoRaCorreto_Deve_AlterarONomeDoUsuarioComORAPassado(self):
+        mock_args = ["444555", "Novo Nome"]
+        mock = Mock()
+        print("AQUI")
 
+        try:
+            with mock.patch('builtins.input', side_effect=mock_args):
+                # ARRANGE
+                output = self._configurarOutput()
+                raEsperado = "444555"
+                usuario = self._criarUsuario(raEsperado)
+                service = UsuarioService([usuario])
+                # ACT
+                service.editarUsuario()
+                # ASSERT
+                sys.stdout = sys.__stdout__
+                self.assertEqual(output.getvalue(), f'RA: {raEsperado}\nNome: {usuario.Nome}\n')
+        except Exception as ex:
+            print(ex)
+        
     # ----------- DELETAR USUARIO  ----------- #
 
     def _configurarOutput(self):
@@ -174,11 +180,11 @@ class UsuarioTests(TestCase):
             userList.append(self._criarUsuario())
         return userList
 
-    def _criarUsuario(self):
+    def _criarUsuario(self, ra=None):
         fake = Faker()
         usuario = Usuario()
-        usuario.Ra = str(fake.random_number()),
-        usuario.Nome = fake.first_name()
+        setattr(usuario, "Ra", str(fake.random_number()) if ra is None else ra)
+        setattr(usuario, "Nome", fake.first_name())
         return usuario
 
 if __name__ == '__main__':
