@@ -65,7 +65,7 @@ class UsuarioService:
         return next((usuario for usuario in self.__lista_usuario if usuario.Ra == ra), None)
 
     def obterTotalUsuarios(self):
-        return len(self.__lista_usuario) + 1
+        return len(self.__lista_usuario)
 
     def imprimeUsuario(self, usuario):
         print("RA:", usuario.Ra)

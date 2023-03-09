@@ -7,7 +7,7 @@ import io
 import sys
 
 class UsuarioTests(TestCase):
-    
+
     # ----------- ADICINAR USUÁRIO  ----------- #
 
     @patch('builtins.input', lambda _: 'ABCDEF')
@@ -180,6 +180,28 @@ class UsuarioTests(TestCase):
             self.assertEqual(usuario.Nome, usuarioBuscado.Nome)
         
     # ----------- DELETAR USUARIO  ----------- #
+
+    @patch('builtins.input', lambda _: '444555')
+    def test_Dado_UmaListaComUsuario_Quando_DeletarUsuario_PassandoRaCorreto_E_BuscarOMesmoUsuarioPorRa_Deve_ExcluirUsuarioPassadoENaoTerMaisUsuariosNaLista(self):
+        # ARRANGE
+        raUsuario = "444555"        
+        service = UsuarioService([self._criarUsuario(raUsuario)])
+        # ACT
+        service.deletarUsuario()
+        usuarioBuscado = service.obterUsuarioPorRA(raUsuario)
+        # ASSERT
+        self.assertIsNone(usuarioBuscado)
+
+    @patch('builtins.input', lambda _: '123456')
+    def test_Dado_UmaListaComUsuario_Quando_DeletarUsuario_PassandoRaErrado_E_BuscarOMesmoUsuarioPorRa_Deve_ImprimirQueUsuarioEstaErradoENaoAlterarAListadeUsuarios(self):
+        # ARRANGE
+        raUsuario = "444555"        
+        service = UsuarioService([self._criarUsuario(raUsuario)])
+        # ACT
+        service.deletarUsuario()
+        usuarioBuscado = service.obterUsuarioPorRA(raUsuario)
+        # ASSERT
+        self.assertIsNotNone(usuarioBuscado)
 
     def _configurarOutput(self):
         output = io.StringIO()
