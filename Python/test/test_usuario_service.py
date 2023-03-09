@@ -7,7 +7,7 @@ import io
 import sys
 
 class UsuarioTests(TestCase):
-
+    
     # ----------- ADICINAR USUÁRIO  ----------- #
 
     @patch('builtins.input', lambda _: 'ABCDEF')
@@ -146,26 +146,38 @@ class UsuarioTests(TestCase):
         self.assertEqual(output.getvalue(), f'RA: {raEsperado}\nNome: {usuario.Nome}\n')
 
     # ----------- EDITAR USUARIO  ----------- #
-    
-    def test_Dado_UmaListaComUsuario_Quando_EditarUsuario_PasssandoRaCorreto_Deve_AlterarONomeDoUsuarioComORAPassado(self):
-        mock_args = ["444555", "Novo Nome"]
-        mock = Mock()
-        print("AQUI")
 
-        try:
-            with mock.patch('builtins.input', side_effect=mock_args):
-                # ARRANGE
-                output = self._configurarOutput()
-                raEsperado = "444555"
-                usuario = self._criarUsuario(raEsperado)
-                service = UsuarioService([usuario])
-                # ACT
-                service.editarUsuario()
-                # ASSERT
-                sys.stdout = sys.__stdout__
-                self.assertEqual(output.getvalue(), f'RA: {raEsperado}\nNome: {usuario.Nome}\n')
-        except Exception as ex:
-            print(ex)
+    def test_Dado_UmaListaComUsuario_Quando_EditarUsuario_PassandoRaCorreto_E_BuscarOMesmoUsuarioPorRa_Deve_AlterarONomeDoUsuarioComORAPassado(self):
+        # ARRANGE
+        raEsperado = "444555"
+        nomeEsperado = "Nome-Teste"        
+        inputs = iter([raEsperado, nomeEsperado])
+        with patch('builtins.input', lambda _: next(inputs)):            
+            usuario = self._criarUsuario(raEsperado)
+            service = UsuarioService([usuario])
+            # ACT
+            service.editarUsuario()
+            usuarioBuscado = service.obterUsuarioPorRA(raEsperado)
+            # ASSERT
+            self.assertEqual(usuarioBuscado.Nome, nomeEsperado)
+
+    def test_Dado_UmaListaComUsuario_Quando_EditarUsuario_PassandoRaErrado_Deve_ImprimirQueUsuarioNaoFoiEncontrado_E_NenhumUsuarioDeveSerAlterado(self):
+        # ARRANGE
+        raCorreto = "444555"
+        raBuscado = "123456"
+        nomeEsperado = "Nome-Teste"        
+        inputs = iter([raBuscado, nomeEsperado])
+        with patch('builtins.input', lambda _: next(inputs)):            
+            output = self._configurarOutput()
+            usuario = self._criarUsuario(raCorreto)
+            service = UsuarioService([usuario])
+            # ACT
+            service.editarUsuario()
+            usuarioBuscado = service.obterUsuarioPorRA(raCorreto)
+            sys.stdout = sys.__stdout__
+            # ASSERT
+            self.assertEqual(output.getvalue(), 'Usuário Não Encontrado\n')
+            self.assertEqual(usuario.Nome, usuarioBuscado.Nome)
         
     # ----------- DELETAR USUARIO  ----------- #
 

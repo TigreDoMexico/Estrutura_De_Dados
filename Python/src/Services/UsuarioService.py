@@ -36,8 +36,6 @@ class UsuarioService:
     def editarUsuario(self):
         valor = input("Digite o RA do usuário: ")
 
-        print(valor)
-
         usuarioEncontrado = self.obterUsuarioPorRA(valor)
 
         if usuarioEncontrado is not None:
@@ -67,7 +65,7 @@ class UsuarioService:
         return next((usuario for usuario in self.__lista_usuario if usuario.Ra == ra), None)
 
     def obterTotalUsuarios(self):
-        return len(self.__lista_usuario)
+        return len(self.__lista_usuario) + 1
 
     def imprimeUsuario(self, usuario):
         print("RA:", usuario.Ra)
