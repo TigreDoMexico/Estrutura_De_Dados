@@ -150,9 +150,9 @@ class UsuarioTests(TestCase):
     def test_Dado_UmaListaComUsuario_Quando_EditarUsuario_PassandoRaCorreto_E_BuscarOMesmoUsuarioPorRa_Deve_AlterarONomeDoUsuarioComORAPassado(self):
         # ARRANGE
         raEsperado = "444555"
-        nomeEsperado = "Nome-Teste"        
+        nomeEsperado = "Nome-Teste"
         inputs = iter([raEsperado, nomeEsperado])
-        with patch('builtins.input', lambda _: next(inputs)):            
+        with patch('builtins.input', lambda _: next(inputs)):
             usuario = self._criarUsuario(raEsperado)
             service = UsuarioService([usuario])
             # ACT
@@ -165,9 +165,9 @@ class UsuarioTests(TestCase):
         # ARRANGE
         raCorreto = "444555"
         raBuscado = "123456"
-        nomeEsperado = "Nome-Teste"        
+        nomeEsperado = "Nome-Teste"
         inputs = iter([raBuscado, nomeEsperado])
-        with patch('builtins.input', lambda _: next(inputs)):            
+        with patch('builtins.input', lambda _: next(inputs)):
             output = self._configurarOutput()
             usuario = self._criarUsuario(raCorreto)
             service = UsuarioService([usuario])
@@ -178,13 +178,13 @@ class UsuarioTests(TestCase):
             # ASSERT
             self.assertEqual(output.getvalue(), 'Usuário Não Encontrado\n')
             self.assertEqual(usuario.Nome, usuarioBuscado.Nome)
-        
+
     # ----------- DELETAR USUARIO  ----------- #
 
     @patch('builtins.input', lambda _: '444555')
     def test_Dado_UmaListaComUsuario_Quando_DeletarUsuario_PassandoRaCorreto_E_BuscarOMesmoUsuarioPorRa_Deve_ExcluirUsuarioPassadoENaoTerMaisUsuariosNaLista(self):
         # ARRANGE
-        raUsuario = "444555"        
+        raUsuario = "444555"
         service = UsuarioService([self._criarUsuario(raUsuario)])
         # ACT
         service.deletarUsuario()
@@ -195,7 +195,7 @@ class UsuarioTests(TestCase):
     @patch('builtins.input', lambda _: '123456')
     def test_Dado_UmaListaComUsuario_Quando_DeletarUsuario_PassandoRaErrado_E_BuscarOMesmoUsuarioPorRa_Deve_ImprimirQueUsuarioEstaErradoENaoAlterarAListadeUsuarios(self):
         # ARRANGE
-        raUsuario = "444555"        
+        raUsuario = "444555"
         service = UsuarioService([self._criarUsuario(raUsuario)])
         # ACT
         service.deletarUsuario()
