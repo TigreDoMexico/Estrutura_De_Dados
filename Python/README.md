@@ -1,5 +1,8 @@
 # Código de Estudo em Python
 
+# Pacotes necessários
+`pip install faker`
+
 # Como executar
 Rodar o comando `python main.py` na pasta raiz do projeto
 
