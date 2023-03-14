@@ -15,7 +15,7 @@ class UsuarioTests(TestCase):
         # ARRANGE
         service = UsuarioService()
         # ACT E ASSERT
-        self.assertTrue(service.adicionarUsuario())
+        self.assertTrue(service.adicionarUsuarioAction())
 
     # ----------- OBTER TOTAL USUÁRIOS  ----------- #
 
@@ -30,7 +30,7 @@ class UsuarioTests(TestCase):
         # ARRANGE
         service = UsuarioService()
         # ACT
-        service.adicionarUsuario()
+        service.adicionarUsuarioAction()
         # ASSERT
         self.assertEqual(service.obterTotalUsuarios(), 1)
 
@@ -48,7 +48,7 @@ class UsuarioTests(TestCase):
         # ARRANGE
         service = UsuarioService()
         # ACT
-        service.adicionarUsuario()
+        service.adicionarUsuarioAction()
         resultado = service.obterUsuarioPorIndice(0)
         # ASSERT
         self.assertIsNotNone(resultado)
