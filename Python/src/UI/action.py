@@ -28,10 +28,10 @@ def ExecutarMenuUsuario():
 
 opcoesUsuario = {
     1: usuarioService.adicionarUsuarioAction,
-    2: usuarioService.imprimirUsuario,
-    3: usuarioService.obterUsuario,
+    2: usuarioService.listarTodosUsuariosAction,
+    3: usuarioService.buscarUsuarioAction,
     4: usuarioService.obterTotalUsuarios,
-    5: usuarioService.editarUsuario,
-    6: usuarioService.deletarUsuario
+    5: usuarioService.editarUsuarioAction,
+    6: usuarioService.deletarUsuarioAction
 }
 

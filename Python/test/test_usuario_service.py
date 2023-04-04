@@ -101,10 +101,10 @@ class UsuarioTests(TestCase):
         # ACT E ASSERT
         self.assertIsNone(service.obterUsuarioPorRA('ABCDEF'))
 
-    # ----------- OBTER USUARIO  ----------- #
+    # ----------- BUSCAR USUARIO  ----------- #
 
     @patch('builtins.input', lambda _: '12345')
-    def test_Dado_UmaListaDeUsuarios_Quando_ObterUsuario_PassandoRACerto_Deve_ImprimirOsDadosCertosNaTela(self):
+    def test_Dado_UmaListaDeUsuarios_Quando_BuscarUsuarioAction_PassandoRACerto_Deve_ImprimirOsDadosCertosNaTela(self):
         # ARRANGE
         output = self._configurarOutput()
         raEsperado = '12345'
@@ -112,31 +112,31 @@ class UsuarioTests(TestCase):
         service = UsuarioService([usuario])
 
         # ACT
-        service.obterUsuario()
+        service.buscarUsuarioAction()
 
         # ASSERT
         sys.stdout = sys.__stdout__
         self.assertEqual(output.getvalue(), f'Usuário Encontrado\nRA: {raEsperado}\nNome: {usuario.Nome}\n')
 
     @patch('builtins.input', lambda _: 'ABCDE')
-    def test_Dado_UmaListaDeUsuarios_Quando_ObterUsuario_PassandoRAErrado_Deve_ImprimirQueNenhumUsuarioFoiEncontrado(self):
+    def test_Dado_UmaListaDeUsuarios_Quando_BuscarUsuarioAction_PassandoRAErrado_Deve_ImprimirQueNenhumUsuarioFoiEncontrado(self):
         # ARRANGE
         output = self._configurarOutput()
         service = UsuarioService([self._criarUsuario("12345")])
         # ACT
-        service.obterUsuario()
+        service.buscarUsuarioAction()
         # ASSERT
         sys.stdout = sys.__stdout__
         self.assertEqual(output.getvalue(), 'Usuário Não Encontrado\n')
 
-    # ----------- IMPRIMIR USUARIO  ----------- #
+    # ----------- LISTAR TODOS OS USÁRIOS  ----------- #
 
     def test_Dado_UmaListaDeUsuariosVazios_Quando_ImprimirUsuarios_Deve_ImprimirNadaNaTela(self):
         # ARRANGE
         output = self._configurarOutput()
         service = UsuarioService()
         # ACT
-        service.imprimirUsuario()
+        service.listarTodosUsuariosAction()
         # ASSERT
         sys.stdout = sys.__stdout__
         self.assertEqual(output.getvalue(), '')
@@ -148,7 +148,7 @@ class UsuarioTests(TestCase):
         usuario = self._criarUsuario(raEsperado)
         service = UsuarioService([usuario])
         # ACT
-        service.imprimirUsuario()
+        service.listarTodosUsuariosAction()
         # ASSERT
         sys.stdout = sys.__stdout__
         self.assertEqual(output.getvalue(), f'RA: {raEsperado}\nNome: {usuario.Nome}\n')
@@ -159,15 +159,22 @@ class UsuarioTests(TestCase):
         # ARRANGE
         raEsperado = "444555"
         nomeEsperado = "Nome-Teste"
-        inputs = iter([raEsperado, nomeEsperado])
+        cpfEsperado = "12345678901"
+        emailEsperado = "teste@gmail.com"
+        dataNascimentoEsperada = "11-10-1998"
+        inputs = iter([raEsperado, nomeEsperado, cpfEsperado, emailEsperado, dataNascimentoEsperada])
         with patch('builtins.input', lambda _: next(inputs)):
             usuario = self._criarUsuario(raEsperado)
             service = UsuarioService([usuario])
             # ACT
-            service.editarUsuario()
+            service.editarUsuarioAction()
             usuarioBuscado = service.obterUsuarioPorRA(raEsperado)
             # ASSERT
+            self.assertEqual(usuarioBuscado.Ra, raEsperado)
             self.assertEqual(usuarioBuscado.Nome, nomeEsperado)
+            self.assertEqual(usuarioBuscado.Cpf, cpfEsperado)
+            self.assertEqual(usuarioBuscado.Email, emailEsperado)
+            self.assertEqual(usuarioBuscado.DataNascimento, dataNascimentoEsperada)
 
     def test_Dado_UmaListaComUsuario_Quando_EditarUsuario_PassandoRaErrado_Deve_ImprimirQueUsuarioNaoFoiEncontrado_E_NenhumUsuarioDeveSerAlterado(self):
         # ARRANGE
@@ -180,12 +187,16 @@ class UsuarioTests(TestCase):
             usuario = self._criarUsuario(raCorreto)
             service = UsuarioService([usuario])
             # ACT
-            service.editarUsuario()
+            service.editarUsuarioAction()
             usuarioBuscado = service.obterUsuarioPorRA(raCorreto)
             sys.stdout = sys.__stdout__
             # ASSERT
             self.assertEqual(output.getvalue(), 'Usuário Não Encontrado\n')
+            self.assertEqual(usuario.Ra, usuarioBuscado.Ra)
             self.assertEqual(usuario.Nome, usuarioBuscado.Nome)
+            self.assertEqual(usuario.Cpf, usuarioBuscado.Cpf)
+            self.assertEqual(usuario.Email, usuarioBuscado.Email)
+            self.assertEqual(usuario.DataNascimento, usuarioBuscado.DataNascimento)
 
     # ----------- DELETAR USUARIO  ----------- #
 
@@ -195,7 +206,7 @@ class UsuarioTests(TestCase):
         raUsuario = "444555"
         service = UsuarioService([self._criarUsuario(raUsuario)])
         # ACT
-        service.deletarUsuario()
+        service.deletarUsuarioAction()
         usuarioBuscado = service.obterUsuarioPorRA(raUsuario)
         # ASSERT
         self.assertIsNone(usuarioBuscado)
@@ -206,7 +217,7 @@ class UsuarioTests(TestCase):
         raUsuario = "444555"
         service = UsuarioService([self._criarUsuario(raUsuario)])
         # ACT
-        service.deletarUsuario()
+        service.deletarUsuarioAction()
         usuarioBuscado = service.obterUsuarioPorRA(raUsuario)
         # ASSERT
         self.assertIsNotNone(usuarioBuscado)

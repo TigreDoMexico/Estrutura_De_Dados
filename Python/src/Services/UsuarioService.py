@@ -7,7 +7,7 @@ class UsuarioService:
         else:
             self.__lista_usuario = []
 
-    def adicionarUsuarioAction(self):        
+    def adicionarUsuarioAction(self):
         try:
             usuario = self._gerarUsuarioComProps(self._obterPropsDoUsuario())
             self.adicionarUsuarioNaLista(usuario)
@@ -16,48 +16,40 @@ class UsuarioService:
             return False
         return True
 
-    def adicionarUsuarioNaLista(self, usuario):        
+    def listarTodosUsuariosAction(self):
+        for usuario in self.__lista_usuario:
+            self.imprimeUsuario(usuario)
+
+    def buscarUsuarioAction(self):
+        self._validarSeUsuarioBuscadoExiste(self.imprimirUsuarioBuscado)
+
+    def editarUsuarioAction(self):
+        self._validarSeUsuarioBuscadoExiste(self.editarUsuario)
+
+    def deletarUsuarioAction(self):
+        self._validarSeUsuarioBuscadoExiste(self.deletarUsuario)
+
+    def adicionarUsuarioNaLista(self, usuario):
         if isinstance(usuario, Usuario):
             self.__lista_usuario.append(usuario)
         else:
             raise Exception("Usuario enviado está no formato errado")
 
-    def imprimirUsuario(self):
-        for usuario in self.__lista_usuario:
-            self.imprimeUsuario(usuario)
+    def imprimirUsuarioBuscado(self, usuario):
+        print("Usuário Encontrado")
+        self.imprimeUsuario(usuario)
+        return usuario
 
-    def obterUsuario(self):
-        valor = input("Digite o RA do usuário: ")
+    def editarUsuario(self, usuario):
+        novasProps = self._obterPropsDoUsuario(False)
+        setattr(usuario, "Nome", novasProps[1])
+        setattr(usuario, "Cpf", novasProps[2])
+        setattr(usuario, "Email", novasProps[3])
+        setattr(usuario, "DataNascimento", novasProps[4])
 
-        usuarioEncontrado = self.obterUsuarioPorRA(valor)
-
-        if usuarioEncontrado is not None:
-            print("Usuário Encontrado")
-            self.imprimeUsuario(usuarioEncontrado)
-        else:
-            print("Usuário Não Encontrado")
-
-    def editarUsuario(self):
-        valor = input("Digite o RA do usuário: ")
-
-        usuarioEncontrado = self.obterUsuarioPorRA(valor)
-
-        if usuarioEncontrado is not None:
-            novoNome = input("Digite o novo nome do usuário: ")
-            usuarioEncontrado.Nome = novoNome
-        else:
-            print("Usuário Não Encontrado")
-
-    def deletarUsuario(self):
-        valor = input("Digite o RA do usuário: ")
-
-        usuarioEncontrado = self.obterUsuarioPorRA(valor)
-
-        if usuarioEncontrado is not None:
-            index = self.__lista_usuario.index(usuarioEncontrado)
-            del self.__lista_usuario[index]
-        else:
-            print("Usuário Não Encontrado")
+    def deletarUsuario(self, usuario):
+        index = self.__lista_usuario.index(usuario)
+        del self.__lista_usuario[index]
 
     def obterUsuarioPorIndice(self, indice):
         try:
@@ -74,7 +66,7 @@ class UsuarioService:
     def imprimeUsuario(self, usuario):
         print("RA:", usuario.Ra)
         print("Nome:", usuario.Nome)
-    
+
     def _obterPropsDoUsuario(self, comRa = True):
         ra = input("Digite o RA do Usuário: ") if comRa else None
         nome = input("Digite o Nome: ")
@@ -83,7 +75,7 @@ class UsuarioService:
         dataNascimento = input("Digite a Data de Nascimento: ")
 
         return (ra, nome, cpf, email, dataNascimento)
-    
+
     def _gerarUsuarioComProps(self, props):
         usuario = Usuario()
         setattr(usuario, "Ra", props[0])
@@ -91,5 +83,15 @@ class UsuarioService:
         setattr(usuario, "Cpf", props[2])
         setattr(usuario, "Email", props[3])
         setattr(usuario, "DataNascimento", props[4])
-        
+
         return usuario
+
+    def _validarSeUsuarioBuscadoExiste(self, callback):
+        raBuscado = input("Digite o RA do usuário: ")
+        usuarioEncontrado = self.obterUsuarioPorRA(raBuscado)
+
+        if usuarioEncontrado is not None:
+            return callback(usuarioEncontrado)
+
+        print("Usuário Não Encontrado")
+        return False
