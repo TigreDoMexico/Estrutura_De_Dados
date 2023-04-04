@@ -15,7 +15,7 @@ class UsuarioTests(TestCase):
         # ARRANGE
         service = UsuarioService()
         # ACT E ASSERT
-        self.assertTrue(service.adicionarUsuario())
+        self.assertTrue(service.adicionarUsuarioAction())
 
     # ----------- OBTER TOTAL USUÁRIOS  ----------- #
 
@@ -30,7 +30,7 @@ class UsuarioTests(TestCase):
         # ARRANGE
         service = UsuarioService()
         # ACT
-        service.adicionarUsuario()
+        service.adicionarUsuarioAction()
         # ASSERT
         self.assertEqual(service.obterTotalUsuarios(), 1)
 
@@ -46,17 +46,25 @@ class UsuarioTests(TestCase):
     @patch('builtins.input', lambda _: 'ABCDEF')
     def test_Dado_UmaListaVazia_Quando_AdicionarNovoUsuario_E_ObterUsuarioNoIndiceZero_Deve_RetornarOsDadosAdicionados(self):
         # ARRANGE
-        service = UsuarioService()
-        # ACT
-        service.adicionarUsuario()
-        resultado = service.obterUsuarioPorIndice(0)
-        # ASSERT
-        self.assertIsNotNone(resultado)
-        self.assertEqual(resultado.Ra, 'ABCDEF')
-        self.assertEqual(resultado.Nome, 'ABCDEF')
-        self.assertEqual(resultado.Cpf, None)
-        self.assertEqual(resultado.Email, None)
-        self.assertEqual(resultado.DataNascimento, None)
+        ra = '12345'
+        nome = 'David'
+        cpf = '12345678901'
+        email = 'david.tigre@teste.com.br'
+        dataNasc = '11-10-1997'
+
+        inputs = iter([ra, nome, cpf, email, dataNasc])
+        with patch('builtins.input', lambda _: next(inputs)):
+            service = UsuarioService()
+            # ACT
+            service.adicionarUsuarioAction()
+            resultado = service.obterUsuarioPorIndice(0)
+            # ASSERT
+            self.assertIsNotNone(resultado)
+            self.assertEqual(resultado.Ra, ra)
+            self.assertEqual(resultado.Nome, nome)
+            self.assertEqual(resultado.Cpf, cpf)
+            self.assertEqual(resultado.Email, email)
+            self.assertEqual(resultado.DataNascimento, dataNasc)
 
     def test_Dado_UmaListaVazia_Quando_ObterUsuarioNoIndiceZero_Deve_RetornarNone(self):
         # ARRANGE

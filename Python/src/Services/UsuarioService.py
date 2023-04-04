@@ -7,16 +7,20 @@ class UsuarioService:
         else:
             self.__lista_usuario = []
 
-    def adicionarUsuario(self):
-        user = Usuario()
-
-        user.Ra = input("Digite o RA do novo usuário: ")
-        user.Nome = input("Digite o Nome do novo usuário: ")
-
-        #self.__lista_usuario.append(user)     # Adiciona no final da lista
-        self.__lista_usuario.insert(0, user)   # Adiciona no inicio da lista
-
+    def adicionarUsuarioAction(self):        
+        try:
+            usuario = self._gerarUsuarioComProps(self._obterPropsDoUsuario())
+            self.adicionarUsuarioNaLista(usuario)
+        except Exception as ex:
+            print(ex)
+            return False
         return True
+
+    def adicionarUsuarioNaLista(self, usuario):        
+        if isinstance(usuario, Usuario):
+            self.__lista_usuario.append(usuario)
+        else:
+            raise Exception("Usuario enviado está no formato errado")
 
     def imprimirUsuario(self):
         for usuario in self.__lista_usuario:
@@ -70,3 +74,22 @@ class UsuarioService:
     def imprimeUsuario(self, usuario):
         print("RA:", usuario.Ra)
         print("Nome:", usuario.Nome)
+    
+    def _obterPropsDoUsuario(self, comRa = True):
+        ra = input("Digite o RA do Usuário: ") if comRa else None
+        nome = input("Digite o Nome: ")
+        cpf = input("Digite o CPF: ")
+        email = input("Digite o Email: ")
+        dataNascimento = input("Digite a Data de Nascimento: ")
+
+        return (ra, nome, cpf, email, dataNascimento)
+    
+    def _gerarUsuarioComProps(self, props):
+        usuario = Usuario()
+        setattr(usuario, "Ra", props[0])
+        setattr(usuario, "Nome", props[1])
+        setattr(usuario, "Cpf", props[2])
+        setattr(usuario, "Email", props[3])
+        setattr(usuario, "DataNascimento", props[4])
+        
+        return usuario
