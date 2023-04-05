@@ -11,3 +11,8 @@ def MenuUsuario():
     print("4 - Total de Usuários na base")
     print("5 - Editar Usuário")
     print("6 - Deletar Usuário")
+
+def MenuOperacao():
+    print("1 - Adicionar Nova Operação")
+    print("2 - Executar Próxima Operação da Fila")
+    print("3 - Executar Todas as Operação da Fila")

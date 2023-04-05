@@ -1,9 +1,9 @@
-from src import ExecutarMenuUsuario, BoasVindas, MontarBancoDeDados
+from src import ExecutarMenuOperacao, BoasVindas, MontarBancoDeDados
 
 if MontarBancoDeDados():
     BoasVindas()
 
     while True:
-        ExecutarMenuUsuario()
+        ExecutarMenuOperacao()
 else:
     print("Erro ao Gerar Banco de Dados. Não é possível executar o programa")

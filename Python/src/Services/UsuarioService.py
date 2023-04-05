@@ -1,4 +1,4 @@
-from src.Models import *
+from src.Models import Usuario
 
 class UsuarioService:
     def __init__(self, lista = None):

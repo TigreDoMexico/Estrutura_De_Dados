@@ -1,14 +1,16 @@
-from src.UI.message import EntradaInvalida, MenuUsuario
-from ..Services import UsuarioService
+from src.UI.console import clear, wait
+from src.UI.message import EntradaInvalida, MenuOperacao, MenuUsuario
+from ..Services import UsuarioService, OperacaoService
 
 usuarioService = UsuarioService()
+operacaoService = OperacaoService()
 
-def ObterInputUsuario():
+def ObterInputUsuario(mensagem = 'Digite um valor: \n'):
     valor = 0
     valorValido = False
 
     while not(valorValido):
-        valorDigitado = input("Digite um valor: \n")
+        valorDigitado = input(mensagem)
         try:
             valor = int(valorDigitado)
             valorValido = True
@@ -26,6 +28,19 @@ def ExecutarMenuUsuario():
     except:
         EntradaInvalida()
 
+def ExecutarMenuOperacao():
+    clear()
+
+    MenuOperacao()
+    opcao = ObterInputUsuario()
+
+    try:
+        opcoesOperacoes[opcao]()
+    except:
+        EntradaInvalida()
+
+    wait()
+
 opcoesUsuario = {
     1: usuarioService.adicionarUsuarioAction,
     2: usuarioService.listarTodosUsuariosAction,
@@ -35,3 +50,8 @@ opcoesUsuario = {
     6: usuarioService.deletarUsuarioAction
 }
 
+opcoesOperacoes = {
+    1: operacaoService.adicionarNovaOperacaoAction,
+    2: operacaoService.executarProximaOperacaoAction,
+    3: operacaoService.executarTodasOperacoesAction
+}
