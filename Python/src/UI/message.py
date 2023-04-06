@@ -16,3 +16,6 @@ def MenuOperacao():
     print("1 - Adicionar Nova Operação")
     print("2 - Executar Próxima Operação da Fila")
     print("3 - Executar Todas as Operação da Fila")
+
+def MenuExpressao():
+    print("1 - Validar Expressao")
