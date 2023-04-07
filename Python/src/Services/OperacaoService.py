@@ -1,3 +1,4 @@
+import copy
 from queue import Queue
 from src.Models.Operacao import Operacao, opcoesOperacoes
 
@@ -30,6 +31,9 @@ class OperacaoService:
         while not self.__fila_operacoes.empty():
             operacao = self.__fila_operacoes.get()
             self._executarOperacao(operacao)
+
+    def getFilaOperacoes(self):
+        return copy.copy(self.__fila_operacoes)
 
     def _executarOperacao(self, operacao):
         try:
