@@ -16,6 +16,6 @@ Rodar o comando `python main.py` na pasta raiz do projeto
 Rodar o comando `python -m unittest` na pasta raiz do projeto
 
 ## Melhorias Futuras
-- [] Melhorar a UI (deixar de ser um console)
-- [] Salvar Lista de Usuários em Banco de Dados
+- [ ] Melhorar a UI (deixar de ser um console)
+- [ ] Salvar Lista de Usuários em Banco de Dados
 
