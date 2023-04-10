@@ -1,63 +1,46 @@
 from src.UI.console import clear, wait
-from src.UI.message import EntradaInvalida, MenuOperacao, MenuUsuario, MenuExpressao
+from src.UI.message import EntradaInvalida, MenuOperacao, MenuUsuario, MenuExpressao, MenuRaiz
+from src.UI.inputUsuario import ObterInputUsuario
 from ..Services import UsuarioService, OperacaoService, ExpressaoService
 
 usuarioService = UsuarioService()
 operacaoService = OperacaoService()
 expressaoService = ExpressaoService()
 
-def ObterInputUsuario(mensagem = 'Digite um valor: \n'):
-    valor = 0
-    valorValido = False
+def ExecutarMenu(mensagem, opcoes):
+    clear()
+    mensagem()
 
-    while not(valorValido):
-        valorDigitado = input(mensagem)
-        try:
-            valor = int(valorDigitado)
-            valorValido = True
-        except:
-            EntradaInvalida()
+    opcao = ObterInputUsuario()
 
-    return valor
+    if(opcao == 0):
+        return 1
+
+    try:
+        opcoes[opcao]()
+    except:
+        EntradaInvalida()
+    finally:
+        wait()
+        return 0
+
+def ExecutarMenuRaiz():
+    return ExecutarMenu(MenuRaiz, opcoesMenuRaiz)
 
 def ExecutarMenuUsuario():
-    clear()
-
-    MenuUsuario()
-    opcao = ObterInputUsuario()
-
-    try:
-        opcoesUsuario[opcao]()
-    except:
-        EntradaInvalida()
-
-    wait()
+    return ExecutarMenu(MenuUsuario, opcoesUsuario)
 
 def ExecutarMenuOperacao():
-    clear()
-
-    MenuOperacao()
-    opcao = ObterInputUsuario()
-
-    try:
-        opcoesOperacoes[opcao]()
-    except:
-        EntradaInvalida()
-
-    wait()
+    return ExecutarMenu(MenuOperacao, opcoesOperacoes)
 
 def ExecutarMenuExpressao():
-    clear()
+    return ExecutarMenu(MenuExpressao, opcoesExpressoes)
 
-    MenuExpressao()
-    opcao = ObterInputUsuario()
-
-    try:
-        opcoesExpressoes[opcao]()
-    except:
-        EntradaInvalida()
-
-    wait()
+opcoesMenuRaiz = {
+    1: ExecutarMenuUsuario,
+    2: ExecutarMenuOperacao,
+    3: ExecutarMenuExpressao
+}
 
 opcoesUsuario = {
     1: usuarioService.adicionarUsuarioAction,
