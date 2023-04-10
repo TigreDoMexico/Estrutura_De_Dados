@@ -28,13 +28,16 @@ def ExecutarMenuRaiz():
     return ExecutarMenu(MenuRaiz, opcoesMenuRaiz)
 
 def ExecutarMenuUsuario():
-    return ExecutarMenu(MenuUsuario, opcoesUsuario)
+    while ExecutarMenu(MenuUsuario, opcoesUsuario) == 0:
+        continue
 
 def ExecutarMenuOperacao():
-    return ExecutarMenu(MenuOperacao, opcoesOperacoes)
+    while ExecutarMenu(MenuOperacao, opcoesOperacoes) == 0:
+        continue
 
 def ExecutarMenuExpressao():
-    return ExecutarMenu(MenuExpressao, opcoesExpressoes)
+    while ExecutarMenu(MenuExpressao, opcoesExpressoes) == 0:
+        continue
 
 opcoesMenuRaiz = {
     1: ExecutarMenuUsuario,

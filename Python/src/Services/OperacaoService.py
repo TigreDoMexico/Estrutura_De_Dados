@@ -1,6 +1,7 @@
 import copy
 from queue import Queue
 from src.Models.Operacao import Operacao, opcoesOperacoes
+from src.UI.inputUsuario import ObterInputUsuario
 
 class OperacaoService:
     def __init__(self, queueOperacoes = None):
@@ -12,7 +13,14 @@ class OperacaoService:
     def adicionarNovaOperacaoAction(self):
         self._imprimirOpcoesOperacoes()
 
-        operacao = self._retornarOperacao(int(input('Digite a operação desejada: ')))
+        operacao = None
+
+        while operacao is None:
+            try:
+                operacao = self._retornarOperacao(ObterInputUsuario())
+            except:
+                print('Opção Inválida - Selecione uma das operações disponíveis')
+
         valores = self._obterValoresDaString(input('Digite os valores separados por espaço: '))
 
         self._putOperacaoNaFila(operacao, valores)

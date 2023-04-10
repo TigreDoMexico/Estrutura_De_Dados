@@ -33,6 +33,17 @@ class OperacaoServiceTest(TestCase):
             sys.stdout = sys.__stdout__
             outputTela = output.getvalue().split('\n')[-2]
             self.assertEqual(outputTela, 'Temos 1 operações na Fila')
+    
+    def test_Dado_UmaOpcaoErrada_Quando_AdicionarNovaOperacao_Deve_ImprimirNaTelaQueFoiSelecionadoUmaOperacaoInvalida(self):
+        inputs = iter(['5', '1', '1 2 3 4'])
+        with patch('builtins.input', lambda _: next(inputs)):
+            output = self._configurarOutput()
+            service = OperacaoService()
+            service.adicionarNovaOperacaoAction()
+
+            sys.stdout = sys.__stdout__
+            outputTela = output.getvalue().split('\n')[-3]
+            self.assertEqual(outputTela, 'Opção Inválida - Selecione uma das operações disponíveis')
 
     def test_DadoUmaFilaVazia_Quando_ExecutarProximaOperacao_Deve_ImprimirNaTelaQueNaoTemOperacoesParaExecutar(self):
         output = self._configurarOutput()
