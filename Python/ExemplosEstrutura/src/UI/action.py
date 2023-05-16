@@ -1,11 +1,12 @@
 from src.UI.console import clear, wait
-from src.UI.message import EntradaInvalida, MenuOperacao, MenuUsuario, MenuExpressao, MenuRaiz
+from src.UI.message import EntradaInvalida, MenuOperacao, MenuUsuario, MenuExpressao, MenuRaiz, MenuListaCompra
 from src.UI.inputUsuario import ObterInputUsuario
-from ..Services import UsuarioService, OperacaoService, ExpressaoService
+from ..Services import UsuarioService, OperacaoService, ExpressaoService, CompraService
 
 usuarioService = UsuarioService()
 operacaoService = OperacaoService()
 expressaoService = ExpressaoService()
+listaCompraService = CompraService()
 
 def ExecutarMenu(mensagem, opcoes):
     clear()
@@ -39,10 +40,15 @@ def ExecutarMenuExpressao():
     while ExecutarMenu(MenuExpressao, opcoesExpressoes) == 0:
         continue
 
+def ExecutarMenuListaCompra():
+    while ExecutarMenu(MenuListaCompra, opcoesListaCompra) == 0:
+        continue
+
 opcoesMenuRaiz = {
     1: ExecutarMenuUsuario,
     2: ExecutarMenuOperacao,
-    3: ExecutarMenuExpressao
+    3: ExecutarMenuExpressao,
+    4: ExecutarMenuListaCompra
 }
 
 opcoesUsuario = {
@@ -62,4 +68,9 @@ opcoesOperacoes = {
 
 opcoesExpressoes = {
     1: expressaoService.validarExpressaoAction,
+}
+
+opcoesListaCompra = {
+    1: listaCompraService.adicionar_item_lista,
+    2: listaCompraService.imprimir_lista_compra
 }

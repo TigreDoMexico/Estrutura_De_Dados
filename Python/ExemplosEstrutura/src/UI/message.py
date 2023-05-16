@@ -8,6 +8,7 @@ def MenuRaiz():
     print("1 - Usuario")
     print("2 - Operacao")
     print("3 - Expressao")
+    print("4 - Lista Compras")
     print("0 - FINALIZAR PROGRAMA")
 
 def MenuUsuario():
@@ -27,4 +28,9 @@ def MenuOperacao():
 
 def MenuExpressao():
     print("1 - Validar Expressao")
+    print("0 - VOLTAR")
+
+def MenuListaCompra():
+    print("1 - Adicionar Item na Lista de Compras")
+    print("2 - Imprimir Lista de Compras")
     print("0 - VOLTAR")
