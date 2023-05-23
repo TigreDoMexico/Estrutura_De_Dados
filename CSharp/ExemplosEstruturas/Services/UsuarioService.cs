@@ -1,11 +1,14 @@
 using ExemplosEstruturas.Models;
+using ExemplosEstruturas.Repository;
 
 namespace ExemplosEstruturas.Services;
 
 public class UsuarioService
 {
-    private SortedSet<Usuario> usuarios = new SortedSet<Usuario>();
-    
+    private IRepository _repository;
+
+    public UsuarioService(IRepository repository) => _repository = repository;
+
     public void AdicionarUsuario()
     {
         Console.WriteLine("Digite o ID do novo Usuário");
@@ -20,7 +23,7 @@ public class UsuarioService
             Nome = nome ?? string.Empty
         };
 
-        if (usuarios.Add(usuario))
+        if (_repository.AdicionarUsuario(usuario))
         {
             Console.WriteLine($"Usuário {usuario.Nome} com ID {usuario.Id} incluido com sucesso");
         }
@@ -32,7 +35,7 @@ public class UsuarioService
 
     public void ImprimirUsuarios()
     {
-        foreach(var usuario in this.usuarios)
+        foreach(var usuario in _repository.ObterTodosUsuario())
         {
             Console.WriteLine($"ID: {usuario.Id} | Nome: {usuario.Nome}");
         }
